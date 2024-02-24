@@ -1,8 +1,14 @@
 package com.nrt.e_learning.service;
 
-public interface FirestoreService {
+import java.util.List;
 
-   
-    public void saveData() ;
+import com.nrt.e_learning.entity.User;
+import com.nrt.e_learning.requests.VideoUploadRequest;
+
+public interface FirestoreService {
+    
+    public void saveData(VideoUploadRequest request) ;
+
+	List<User> getAllUsers();
        
 }

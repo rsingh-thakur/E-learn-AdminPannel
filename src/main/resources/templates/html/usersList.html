@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>User List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>User ID</th>
+                <th>Phone Number</th>
+                <th>Creation Date</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            <!-- User details will be inserted here using JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Function to fetch all users data and update the table
+        function fetchAllUsers() {
+            fetch('/getAllUsers')
+            .then(response => response.json())
+            .then(data => {
+                generateUserRows(data);
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+        }
+
+        // Function to generate table rows for user data
+        function generateUserRows(userData) {
+            var userTableBody = document.getElementById("userTableBody");
+            userTableBody.innerHTML = ""; // Clear existing rows
+            userData.forEach(function(user) {
+                var row = "<tr>";
+                row += "<td>" + user.username + "</td>";
+                row += "<td>" + user.email + "</td>";
+                row += "<td>" + user.userId + "</td>";
+                row += "<td>" + user.phoneNumber + "</td>";
+                row += "<td>" + user.creationDate + "</td>";
+                row += "</tr>";
+                userTableBody.innerHTML += row;
+            });
+        }
+
+        // Call fetchAllUsers when the page is loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchAllUsers();
+        });
+    </script>
+</body>
+</html>
