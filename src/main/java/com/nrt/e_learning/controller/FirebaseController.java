@@ -21,13 +21,7 @@ public class FirebaseController {
 	@Autowired 
 	private FirestoreService firestoreService;
 	
-	
-	@GetMapping("/")
-	public ModelAndView getLoginPage(ModelAndView modelAndView) {
-		modelAndView.setViewName("html/usersList");
-		return modelAndView;
 
-	}
 	
 	
 	@PostMapping("/savesData")
@@ -38,11 +32,5 @@ public class FirebaseController {
 	}
 
 	
-	
-   @GetMapping("/getAllUsers")
-	public ResponseEntity<List<User>> getAllUsersData( ) {
-	   List<User> usersList = firestoreService.getAllUsers();
-	   return new ResponseEntity<List<User>>( usersList, null, HttpStatus.OK);
-	   
-	}
+
 }

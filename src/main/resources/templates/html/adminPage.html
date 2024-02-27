@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>User List</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<style>
+		table {
+			border-collapse: collapse;
+		}
+
+		th,
+		td {
+			border: 1px solid #dddddd;
+			text-align: left;
+			padding: 8px;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+
+		tr:hover {
+			background-color: rgb(192, 192, 192);
+		}
+
+		.home-section {
+			position: relative;
+			background: #E4E9F7;
+			min-height: 100vh;
+			transition: all 0.5s ease;
+			z-index: 2;
+		}
+
+		.home-section.expanded {
+			left: 250px;
+			width: calc(100% - 250px);
+		}
+
+		.home-section.collapsed {
+			left: 78px;
+			width: calc(100% - 78px);
+		}
+
+		.home-section .text {
+			display: inline-block;
+			color: #11101d;
+			font-size: 25px;
+			font-weight: 500;
+			margin: 18px;
+		}
+
+		.container {
+			display: flex;
+			justify-content: space-around;
+			
+		}
+
+		.card {
+			margin:20px;
+			background-color: white;
+			border-radius: 8px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			padding: 20px;
+			width: 22%;
+		}
+		
+		.card:hover {
+			margin: 5px;
+			cursor: pointer 
+			} 
+        
+		.card h2 {
+			font-size: 22px;
+			margin-bottom: 10px;
+		}
+
+		.card p {
+			font-size: 14px;
+			color: #666;
+		}
+	</style>
+</head>
+
+<body style="background-color: #dddddd;">
+
+	<div id="sidebar"></div>
+
+	<section class="home-section collapsed">
+		<div class="text">Admin Dashboard</div>
+		<div class="container">
+			<div class="card" onclick="gotoUserListPage()">
+				<h2>Students</h2>
+				<p>Total Students: <span id="userCount">0</span></p>
+				<p>Description: The total registered students on the application </p>
+			</div>
+			<div class="card" onclick="gotoShortsPage()">
+				<h2>Videos</h2>
+				<p>Total Videos: <span id="videoCount">0</span></p>
+				<p>Description: Videos count that was uploaded in diffrent courses.</p>
+			</div>
+			<div class="card">
+				<h2>Quizzes</h2>
+				<p>Total Quizzes: <span id="quizCount">0</span></p>
+				<p>Description: Number of quizess that were created for students</p>
+			</div>
+			<div class="card">
+				<h2>Shorts</h2>
+				<p>Total Shorts: <span id="quizCount">0</span></p>
+				<p>Description: Small videos with duration less then 3 minutes </p>
+			</div>
+		</div>
+		<div class="containers">
+			 
+			<div class="card" onclick="gotoNotesPage()">
+				<h2>Notes</h2>
+				<p>Total Notes: <span id="NotesCount">0</span></p>
+				<p>Description: Sets of notes are available to students.</p>
+			</div>
+			<div class="card">
+				<h2>Quizzes</h2>
+				<p>Total Quizzes: <span id="quizCount">0</span></p>
+				<p>Description: Number of quizess that were created for students</p>
+			</div>
+			 
+		</div>
+	</section>
+
+	<script>
+		// Function to fetch counts for users, videos, and quizzes
+		function fetchCounts() {
+			// Simulating fetch counts from server
+			var counts = {
+				users: 100, // Example count for users
+				videos: 50, // Example count for videos
+				quizzes: 25 // Example count for quizzes
+			};
+			getUsersCount();
+			getShortsCount();
+			updateCounts(counts);
+		}
+
+		// Function to update counts in the cards
+		function updateCounts(counts) {
+			
+			document.getElementById("videoCount").innerText = counts.videos;
+			document.getElementById("quizCount").innerText = counts.quizzes;
+		}
+
+		// Call fetchCounts when the page is loaded
+		document.addEventListener("DOMContentLoaded", function () {
+			fetchCounts();
+		});
+
+		// Load sidebar dynamically
+		$(function () {
+			$("#sidebar").load("/getCommonSidebar");
+		});
+
+		// Toggle sidebar state
+		document.getElementById('btn').addEventListener('click', function () {
+			$(".home-section").toggleClass("expanded collapsed");
+		});
+
+
+		function gotoUserListPage() {
+			window.location.href = "/getUserPage"; // Replace "/user-list" with the actual URL of the user list page
+		}
+		function gotoShortsPage() {
+			window.location.href = "/shorts/getShortsPage"; // Replace "/user-list" with the actual URL of the user list page
+		}
+
+		function getUsersCount() {
+			fetch('/getUsersCount')
+				.then(response => response.json())
+				.then(data => {
+					document.getElementById("userCount").innerText = data;
+					console.log('Total Users:', data); // Assuming the response contains the count of users
+					// You can perform further actions with the count here, such as updating the UI
+				})
+				.catch(error => {
+					console.error('Error fetching user count:', error);
+				});
+		}
+
+
+function getShortsCount() {
+			fetch('/shorts/getShortsCount')
+				.then(response => response.json())
+				.then(data => {
+					document.getElementById("videoCount").innerText = data;
+					console.log('Total Shorts:', data); // Assuming the response contains the count of users
+					// You can perform further actions with the count here, such as updating the UI
+				})
+				.catch(error => {
+					console.error('Error fetching user count:', error);
+				});
+		}
+	</script>
+</body>
+
+</html>

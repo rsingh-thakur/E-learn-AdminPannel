@@ -1,74 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User List</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>User List</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<style>
+		table {
+			border-collapse: collapse;
+			background-color: white;
+		}
+
+		th,
+		td {
+			border: 1px solid #dddddd;
+			text-align: left;
+			padding: 8px;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+
+		tr:hover {
+			background-color: rgb(192, 192, 192);
+		}
+
+		.container {
+			background-color: rgb(255, 255, 255);
+			margin: 10px;
+		}
+
+		.home-section {
+			position: relative;
+			background: #E4E9F7;
+			min-height: 100vh;
+			transition: all 0.5s ease;
+			z-index: 2;
+		}
+
+		.home-section.expanded {
+			left: 250px;
+			width: calc(100% - 250px);
+		}
+
+		.home-section.collapsed {
+			left: 78px;
+			width: calc(100% - 78px);
+		}
+
+		.home-section .text {
+			display: inline-block;
+			color: #11101d;
+			font-size: 25px;
+			font-weight: 500;
+			margin: 18px;
+		}
+	</style>
 </head>
-<body>
-    <h1>User List</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>User ID</th>
-                <th>Phone Number</th>
-                <th>Creation Date</th>
-            </tr>
-        </thead>
-        <tbody id="userTableBody">
-            <!-- User details will be inserted here using JavaScript -->
-        </tbody>
-    </table>
 
-    <script>
-        // Function to fetch all users data and update the table
-        function fetchAllUsers() {
-            fetch('/getAllUsers')
-            .then(response => response.json())
-            .then(data => {
-                generateUserRows(data);
-            })
-            .catch(error => {
-                console.error('Error fetching users:', error);
-            });
-        }
+<body style="background-color: #dddddd;">
 
-        // Function to generate table rows for user data
-        function generateUserRows(userData) {
-            var userTableBody = document.getElementById("userTableBody");
-            userTableBody.innerHTML = ""; // Clear existing rows
-            userData.forEach(function(user) {
-                var row = "<tr>";
-                row += "<td>" + user.username + "</td>";
-                row += "<td>" + user.email + "</td>";
-                row += "<td>" + user.userId + "</td>";
-                row += "<td>" + user.phoneNumber + "</td>";
-                row += "<td>" + user.creationDate + "</td>";
-                row += "</tr>";
-                userTableBody.innerHTML += row;
-            });
-        }
+	<div id="sidebar"></div>
 
-        // Call fetchAllUsers when the page is loaded
-        document.addEventListener("DOMContentLoaded", function() {
-            fetchAllUsers();
+	<section class="home-section collapsed">
+		<div class="text">Stuents List</div>
+		<div class="container">
+		<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Name </th>
+						<th>Email</th>
+						<th>Student ID</th>
+						<th>Phone Number</th>
+						<th>Registration Date</th>
+					</tr>
+				</thead>
+				<tbody id="userTableBody">
+					<!-- User details will be inserted here using JavaScript -->
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+	<script>
+		// Function to fetch all users data and update the table
+		function fetchAllUsers() {
+			fetch('/getAllUsers')
+				.then(response => response.json())
+				.then(data => {
+					generateUserRows(data);
+				})
+				.catch(error => {
+					console.error('Error fetching users:', error);
+				});
+		}
+
+		// Function to generate table rows for user data
+		function generateUserRows(userData) {
+			var userTableBody = document.getElementById("userTableBody");
+			userTableBody.innerHTML = ""; // Clear existing rows
+			userData.forEach(function (user) {
+				var row = "<tr>";
+				row += "<td>" + user.username + "</td>";
+				row += "<td>" + user.email + "</td>";
+				row += "<td>" + user.userId + "</td>";
+				row += "<td>" + user.phoneNumber + "</td>";
+				row += "<td>" + user.creationDate + "</td>";
+				row += "</tr>";
+				userTableBody.innerHTML += row;
+			});
+		}
+
+		// Call fetchAllUsers when the page is loaded
+		document.addEventListener("DOMContentLoaded", function () {
+			fetchAllUsers();
+		});
+
+		// Load sidebar dynamically
+		$(function () {
+			$("#sidebar").load("/getCommonSidebar");
+		});
+
+		// Toggle sidebar state
+		   document.getElementById('btn').addEventListener('click', function () {
+            $(".home-section").toggleClass("expanded collapsed");
         });
-    </script>
+	</script>
 </body>
+
 </html>

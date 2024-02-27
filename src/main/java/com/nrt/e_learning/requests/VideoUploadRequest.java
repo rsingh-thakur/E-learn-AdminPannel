@@ -1,11 +1,8 @@
 package com.nrt.e_learning.requests;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+ 
 @NoArgsConstructor
 public class VideoUploadRequest {
 

@@ -45,7 +45,6 @@ public class FirestoreServiceImpl implements FirestoreService {
 	public List<User> getAllUsers() {
 		List<User> userList = new ArrayList<>();
 
-		// Access Firestore instance
 		Firestore db = FirestoreClient.getFirestore();
 
 		// Reference to the "users" collection
